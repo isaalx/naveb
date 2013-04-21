@@ -58,6 +58,7 @@
             this.Workspace.Name = "Workspace";
             this.Workspace.Size = new System.Drawing.Size(800, 600);
             this.Workspace.TabIndex = 1;
+    
             // 
             // Main
             // 

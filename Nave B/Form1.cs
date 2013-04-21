@@ -29,5 +29,7 @@ namespace Nave_B
             Workspace.Controls.Add(jueguito);
         }
 
+      
+
     }
 }
