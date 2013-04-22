@@ -1,439 +1,268 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-    class Matriz
-    {
-        //Campos...
-        
-        private int nc, nf;
-        private Matriz INV;
-        private double[,] arr;
-        private double det;
-
-
-
-        //Constructores...
-
-        public Matriz(int numfilas, int numcolumnas) {
-
-            redimensionar(numfilas, numcolumnas);
-
-        
-        }
-
-
-        public Matriz(Matriz m) {
-            redimensionar(m.nfilas, m.ncolumnas);
-
-            copiar(m);
-
-        }
-
-
-        //Destructor...
-
-    ~ Matriz() {
-        nf = 0;
-        nc = 0;
-        arr = null;
-        INV = null;
-    }
-
-
-        //Properties...
-
-        public int nfilas {
-            get { return nf; }
-            set { nf = value; }
-        }
-
-        public int ncolumnas {
-            get { return nc; }
-            set { nc = value; }
-        
-        }
-
-
-        public double this[int fila, int columna]{
-
-            get { return arr[fila, columna]; }
-            set { arr[fila, columna] = value; }
-                         
-    
-        }
-
-
-        public double determinante {
-            get { intercambio_Jordan();
-                  return det;
-            }
-        }
-
-        
-
-
-        //Metodos 
-
-
-        public void redimensionar(int numfilas, int numcolumnas)
-        {
-
-            nf = numfilas;
-            nc = numcolumnas;
-            arr = new double[nf, nc];
-
-        }
-
-        
-        public void copiar(Matriz m, int fi, int ci) {
-            int f,c, maxf, maxc;
-
-            maxf = (this.nfilas >= m.nfilas + fi) ? m.nfilas + fi : this.nfilas ;
-
-            maxc = (this.ncolumnas >= m.ncolumnas + ci) ? m.ncolumnas + ci : this.ncolumnas ;
-
-            for (f = fi; f <= maxf; f++) {
-
-                for (c = ci; c <= maxc; c++) {
-                    arr[f, c] = m[f - fi, c - ci];
-            }
-            }
-            
-        }
-
-        public void copiar(Matriz m) {
-            copiar(m, 0, 0);
-
-        }
-
-
-        public Matriz pivotear(Matriz mat, int r, int s)
-        {
-
-
-            Matriz A = new Matriz(mat.nfilas , mat.ncolumnas );
-
-            for (int i = 0; i < mat.nfilas ; i++)
-            {
-                for (int j = 0; j < mat.ncolumnas ; j++)
-                {
-
-                    if ((r != i) && (j != s))
-                        A[i, j] = mat[i, j] - mat[i, s] * mat[r, j] / mat[r, s];
-
-                    if ((r == i) && (j != s))
-                        A[i, j] = mat[i, j] / mat[r, s];
-
-                    if ((r != i) && (j == s))
-                        A[i, j] = -(mat[i, j] / mat[r, s]);
-
-                    if ((r == i) && (j == s))
-                        A[i, j] = (1 / mat[r, s]);
-                }
-
-            }
-
-            return A;
-
-        }
-
-
-        private bool intercambio_Jordan()
-        {
-
-            int orden;
-            double d=1;
-            bool pendiente = false;
-            bool pivoteo = false;
-
-            orden = this.nfilas;
-
-
-            bool[] pivs = new bool[orden];
-            INV = new Matriz(orden, orden);
-
-
-            INV = this.Copia();
-
-
-            for (int x = 0; x < orden; x++)
-            {
-
-                if (INV[x, x] == 0)
-                    pivs[x] = false;
-                else
-                {
-                    pivs[x] = true;
-                    d *= INV[x,x];
-                    INV = pivotear(INV, x, x);
-                }
-            }
-
-            do
-            {
-                pivoteo = false;
-                pendiente = false;
-
-                for (int y = 0; y < orden; y++)
-                {
-                    if (pivs[y] == false)
-                    {
-
-                        if (INV[y, y] != 0)
-                        {
-                            pivs[y] = true;
-                            d *= INV[y, y];
-                            INV = pivotear(INV, y, y);
-                            pivoteo = true;
-                        }
-                        else
-                        {
-                            pendiente = true;
-                        }
-                    }
-
-                }
-
-            } while (pivoteo);
-
-            if (pendiente == true)
-            {
-                det = 0;
-                return false;
-            }
-            else
-            {
-                det = d;
-                return true;
-            }
-
-
-        }
-
-
-        public bool invertirme()
-        {
-
-            if (this.nfilas != this.ncolumnas)
-                return false;
-            else {
-
-                bool b;
-
-                b= intercambio_Jordan();
-
-                if (b){
-                for (int f = 0; f < INV.nfilas; f++)
-                {
-                    for (int c = 0; c < INV.ncolumnas; c++)
-                    {
-                        this[f, c] = INV[f, c];
-                    }
-                }
-                   
-                }
-
-                return b;
-
-            }
-            
-            
-        }
-
-
-        public Matriz Copia()
-        {
-
-            Matriz C = new Matriz(this.nfilas, this.ncolumnas);
-
-            for (int f = 0; f < this.nfilas; f++)
-            {
-
-                for (int c = 0; c < this.ncolumnas; c++)
-                {
-
-                    C[f, c] = this[f, c];
-
-                }
-
-            }
-
-            return C;
-
-        }
-
-        
-        //Sobrecarga de Operadores
-
-
-        //Unarios 
-
-        public static Matriz operator -(Matriz A) {
-
-            return -1 * A;
-       }
-
-        public static Matriz operator +(Matriz A) {
-            return A;
-        }
-
-
-        //Binarios - Aritmeticos 
-
-
-        public static Matriz operator +(Matriz A, Matriz B) {
-
-            Matriz res = new Matriz(A.nfilas, A.ncolumnas);
-
-            if ((A.nfilas == B.nfilas) && (A.ncolumnas == B.ncolumnas))
-            {
-
-                for (int i = 0; i < A.nfilas; i++)
-                {
-                    for (int j = 0; j < A.ncolumnas; j++)
-                    {
-
-                        res[i, j] = A[i, j] + B[i, j];
-
-
-                    }
-
-                }
-
-                return res;
-
-
-            }
-            else
-                return null;
-            
-        
-        }
-
-        public static Matriz operator -(Matriz A, Matriz B) {
-
-            Matriz res = new Matriz(A.nfilas, A.ncolumnas);
-
-            if ((A.nfilas == B.nfilas) && (A.ncolumnas == B.ncolumnas))
-            {
-
-                for (int i = 0; i < A.nfilas; i++)
-                {
-                    for (int j = 0; j < A.ncolumnas; j++)
-                    {
-
-                        res[i, j] = A[i, j] - B[i, j];
-
-
-                    }
-
-                }
-
-                return res;
-
-
-            }
-            else
-                return null;
-        }
-
-        public static Matriz operator *(Matriz A, Matriz B)
-        {
-            if (A.ncolumnas != B.nfilas)
-                return null;
-
-            Matriz N = new Matriz(A.nfilas, B.ncolumnas);
-
-            for (int f = 0; f < A.nfilas; f++)
-            {
-                for (int c = 0; c < B.ncolumnas; c++)
-                {
-
-                    for (int x = 0; x < A.ncolumnas; x++)
-                    {
-                        N[f, c] += A[f, x] * B[x, c];
-                    }
-
-                }
-            }
-
-            return N;
-
-        }
-
-        public static Matriz operator *(double d, Matriz A) {
-
-            Matriz res = new Matriz(A.nfilas, A.ncolumnas);
-
-            for (int i=0; i < res.nfilas; i++)
-            {
-                for (int j=0; j < res.ncolumnas; j++) { 
-                
-                
-
-                res[i, j] = A[i, j] * d; 
-
-                    }
-            }
-            return res;
-
-        }
-
-        public static Matriz operator *(Matriz A, double d) {
-
-            return d * A;
-
-        }
-
-        public  static Matriz  operator / (Matriz A, double d){
-
-            return (1 / d) * A;
-            
-        }
-
-
-        //Binarios - Logicos 
-
-
-        public static bool operator ==(Matriz A, Matriz B) {
-            bool diferente=false;
-
-            if ((A.nfilas == B.nfilas ) && ( A.ncolumnas == B.ncolumnas )){
-            
-                for (int i= 0; i< A.nfilas ; i ++){
-                    for (int j = 0; j < A.ncolumnas; j++)
-                    {
-                        if (A[i, j] != B[i, j])
-                            diferente = true;
-                    }
-                }
-            }
-            else
-            return false;
-
-
-
-            if (diferente)
-                return false;
-            else
-                return true;
-            
-         }
-
-
-        public static bool operator !=(Matriz A, Matriz B) {
-
-            return !(A == B);
-        }
-
-
-
-
-
-
-
-
-    }
+using System;
+
+namespace Nave_B
+{
+	public class Matriz
+	{
+		private int filas;
+		private int columnas;
+		private double[,] datos;
+
+		public Matriz ()
+		{
+			this.filas = 0;
+			this.columnas = 0;
+			this.datos = new double[filas,columnas];
+		}
+
+		public Matriz(int filas, int columnas)
+			: this (filas, columnas, 0)
+		{
+		}
+		
+        public Matriz(Matriz m)
+		{
+            this.filas = m.Filas;
+            this.columnas = m.Columnas;
+			this.datos = new double[filas,columnas];
+			for (int i = 0; i < filas; i++)
+			{
+				for (int j = 0; j < columnas; j++)
+				{
+					this.datos[i,j] = m[i,j];
+				}
+			}
+		}
+
+		public Matriz (int filas, int columnas, double valor)
+		{
+			this.filas = filas;
+			this.columnas = columnas;
+			this.datos = new double[filas,columnas];
+
+			for (int i = 0; i < filas; i++)
+			{
+				for (int j = 0; j < columnas; j++)
+				{
+					this.datos[i,j] = valor;
+				}
+			}
+		}
+
+		public int Filas {
+			get {
+				return filas;
+			}
+			set {
+				filas = value;
+			}
+		}
+
+		public int Columnas {
+			get {
+				return columnas;
+			}
+			set {
+				columnas = value;
+			}
+		}
+
+		public double this[int x,int y] {
+			get {
+				return datos[x,y];
+			}
+			set {
+				datos[x,y] = value;
+			}
+		}
+
+		public bool esCuadrada()
+		{
+			return (Filas == Columnas);
+		}
+		
+		public bool esSumable(Matriz m)
+		{
+			return (Filas == m.Filas && Columnas == m.Columnas);
+		}
+		
+		public bool esMultiplicable(Matriz m)
+		{
+			return (m.Filas == Columnas);
+		}
+
+		public static Matriz operator *(Matriz a, double b)
+		{
+			Matriz resultado = new Matriz(a.Filas, a.Columnas);
+			for (int i = 0; i < a.Filas; i++)
+			{
+				for (int j = 0; j < a.Columnas; j++)
+				{
+					resultado[i,j] = a[i,j] * b;
+				}
+			}
+			return resultado;
+		}
+
+		public static Matriz operator * (double a, Matriz b)
+		{
+			return b * a;
+		}
+
+		public static Matriz operator * (Matriz a, Matriz b)
+		{
+			if (a.esMultiplicable (b))
+			{
+				Matriz resultado = new Matriz (a.Filas, b.Columnas);
+
+				for (int i = 0; i < a.Filas; i++)
+				{
+					for (int j = 0; j < b.Columnas; j++)
+					{
+						double respuesta = 0;
+						for (int k = 0; k < a.Columnas; k++) {
+							respuesta += a[i,k] * b[k,j];
+						}
+						resultado[i,j] = respuesta;
+					}
+				}
+				return resultado;
+			} else {
+				throw new System.InvalidOperationException("El numero de columnas de la matriz A debe coincidir con el numero de filas de la matriz B.");
+			}
+		}
+
+		public static Matriz operator -(Matriz a)
+		{
+			return a * -1;
+		}
+
+		public static Matriz operator +(Matriz a, Matriz b)
+		{
+			if (a.esSumable(b))
+			{
+				Matriz resultado = new Matriz(a.Filas, a.Columnas);
+				for (int i = 0; i < a.Filas; i++)
+				{
+					for (int j = 0; j < a.Columnas; j++)
+					{
+						resultado[i,j] = a[i,j] + b[i,j];
+					}
+				}
+				return resultado;
+			}
+			else
+			{
+				throw new System.InvalidOperationException("Las matrices deben ser de la misma dimension.");
+			}
+		}
+
+		public static Matriz operator + (Matriz a, double b)
+		{
+			return a + new Matriz(a.Filas, a.Columnas, b);
+		}
+
+		public static Matriz operator + (double a, Matriz b)
+		{
+			return b + a;
+		}
+
+		public static Matriz operator -(Matriz a, Matriz b)
+		{
+			return a + (-b);
+		}
+
+		public static Matriz operator -(Matriz a, double b)
+		{
+			return a - new Matriz(a.Filas, a.Columnas, b);
+		}
+		
+		public static Matriz operator -(double a, Matriz b)
+		{
+			return -b + a;
+		}
+
+		public override int GetHashCode()        
+		{            
+			return base.GetHashCode();
+		}         
+		
+		public override bool Equals (object obj)
+		{
+			if (obj == null) return false;             
+			
+			if (GetType() != obj.GetType())	return false; 
+
+			Matriz b = (Matriz)obj;
+
+			if (!esSumable(b)) return false;
+			
+			for (int i = 0; i < this.Filas; i++) {
+				for (int j = 0; j < this.Columnas; j++) {
+					if(this[i,j] != b[i,j]) return false;
+				}
+			}
+			
+			return true;
+			
+		}
+
+		public static bool operator == (Matriz a, Matriz b)
+		{
+			return a.Equals(b);
+		}
+
+		public static bool operator !=(Matriz a, Matriz b)
+		{
+			return !(a.Equals(b));
+		}
+
+		private static void inv_jordan (Matriz R, Matriz A, int r)
+		{
+			for(int i = 0; i < A.Filas; i++)
+			{
+				for(int j = 0; j < A.Columnas; j++)
+				{
+					R[i,j] = 
+						( i != r && j != r ? A[i,j] - (A[i,r]*A[r,j])/A[r,r]:
+						 ( i == r && j != r ? A[i,j]/A[r,r] : 
+						 ( i != r && j == r ? -A[i,j]/A[r,r] : 
+						 1/A[r,r] )));
+				}
+			}
+		}
+
+		public static Matriz operator ! (Matriz A)
+		{
+			if (A.esCuadrada())
+			{
+				Matriz T = new Matriz(A);
+				Matriz R = new Matriz(A);
+				for(int r = 0; r < R.Filas; r++)
+				{
+					if( T[r,r] == 0.0D ) throw new System.InvalidOperationException("Las matriz no se puede invertir (pivote 0).");
+					inv_jordan(R, T, r);
+					T = new Matriz(R);
+				}
+				return R;
+			} else {
+				throw new System.InvalidOperationException("Las matriz debe ser cuadrada.");
+			}
+		}
+
+		public override String ToString()
+		{
+			String resultado = "";
+			for (int i = 0; i < this.Filas; i++)
+			{
+				for (int j = 0; j < this.Columnas; j++)
+				{
+					resultado += "[ " + this[i,j] + "]";
+				}
+				resultado += "\n";
+			}
+			return resultado;
+		}
+	}
+}
 

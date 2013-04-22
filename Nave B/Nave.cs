@@ -48,5 +48,29 @@ namespace Nave_B
             }
         }
 
+        public void moverArriba()
+        {
+            this.Y -= 3;
+            this.setDireccion(Nave.ARRIBA);
+        }
+        public void moverAbajo()
+        {
+            this.Y += 3;
+            this.setDireccion(Nave.ARRIBA);
+        }
+        public void moverIzquierda()
+        {
+            this.X -= 3;
+            this.setDireccion(Nave.ARRIBA);
+        }
+        public void moverDerecha()
+        {
+            this.X += 3;
+            this.setDireccion(Nave.ARRIBA);
+        }
+
+        public void disparar() { 
+        }
+
     }
 }
