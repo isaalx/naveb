@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Asteroide.cs" />
-    <Compile Include="Disparo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +98,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\asteroide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aste.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nave.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\naveintro.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

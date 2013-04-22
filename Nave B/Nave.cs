@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace Nave_B
 {
     class Nave
     {
         private List<Rectangle> Naves;
-        public List<Disparo> Disparos { set; get; }
         public int Y { set; get; }
         public int X { set; get; }
         public const int NORMAL = 0;
         public const int ARRIBA = 3;
         public const int ABAJO = 6;
-        private bool ar = false, ab = false, iz = false, de = false;
-        private int dir = 0;
+        private int index = 0;
+        private int contador = 0;
         private int nave = 0;
 
         public Nave() : this (0,0){ 
@@ -34,86 +32,44 @@ namespace Nave_B
             Naves.Add(new Rectangle(0, 89, 43, 31));
             Naves.Add(new Rectangle(46, 89, 43, 31));
             Naves.Add(new Rectangle(91, 89, 43, 31));
-            Disparos = new List<Disparo>();
         }
 
         public Rectangle getNave() {
-            nave = (nave < 3 ? nave : 0);
-            return Naves[dir + nave++];
+            nave = (nave < 3? nave + 1: 1);
+            contador--;
+            if (contador == 0) setDireccion(NORMAL);
+            return Naves[index + nave-1];
         }
 
         public void setDireccion(int dir = NORMAL | ARRIBA | ABAJO){
-                this.dir = dir;
-        }
-
-        public void getPosision() {
-            if (ar) {
-                this.Y -= 3;
-                this.setDireccion(Nave.ARRIBA);
-            }
-            if (ab)
-            {
-                this.Y += 3;
-                this.setDireccion(Nave.ABAJO);
-            }
-            if (iz)
-            {
-                this.X -= 3;
-                this.setDireccion(Nave.NORMAL);
-            }
-            if (de)
-            {
-                this.X += 3;
-                this.setDireccion(Nave.NORMAL);
+            if (contador == 0) {
+                index = dir;
+                contador = 3;
             }
         }
 
-        public void mover(Keys tecla)
+        public void moverArriba()
         {
-            switch (tecla)
-            {
-                case Keys.Up:
-                    ar = true;
-                    break;
-                case Keys.Down:
-                    ab = true;
-                    break;
-                case Keys.Left:
-                    iz = true;
-                    break;
-                case Keys.Right:
-                    de = true;
-                    break;
-                case Keys.X:
-                    disparar();
-                    break;
-            }
+            this.Y -= 3;
+            this.setDireccion(Nave.ARRIBA);
         }
-
-        public void detener(Keys tecla)
+        public void moverAbajo()
         {
-            switch (tecla)
-            {
-                case Keys.Up:
-                    ar = false;
-                    break;
-                case Keys.Down:
-                    ab = false;
-                    break;
-                case Keys.Left:
-                    iz = false;
-                    break;
-                case Keys.Right:
-                    de = false;
-                    break;
-            }
+            this.Y += 3;
+            this.setDireccion(Nave.ARRIBA);
+        }
+        public void moverIzquierda()
+        {
+            this.X -= 3;
+            this.setDireccion(Nave.ARRIBA);
+        }
+        public void moverDerecha()
+        {
+            this.X += 3;
+            this.setDireccion(Nave.ARRIBA);
         }
 
-        public void disparar() {
-            nave = (nave < 3 ? nave : 0);
-            int lx = this.X + (Naves[dir + nave].Width);
-            int ly = this.Y + (Naves[dir + nave].Height / 2 );
-            Disparos.Add(new Disparo(lx, ly, 10, 2, Color.Yellow));
+        public void disparar() { 
         }
 
     }

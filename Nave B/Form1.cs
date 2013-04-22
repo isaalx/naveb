@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Nave_B
 {
     public partial class Main : Form
     {
         Juego jueguito;
         private BufferedGraphicsContext buffercontext;
-
+      
         public Main()
         {
             InitializeComponent();
@@ -27,6 +28,7 @@ namespace Nave_B
             BJugar.Hide();
             jueguito = new Juego(buffercontext);
             Workspace.Controls.Add(jueguito);
+            
         }
 
       
