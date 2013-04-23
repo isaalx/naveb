@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace Nave_B
 {
@@ -23,6 +24,7 @@ namespace Nave_B
         private BufferedGraphics buffer;
         private int ticks = 0, puntos = 0, prenivel = 0, nivel = 0;
         private GraphicsPath BordesNave;
+        private SoundPlayer soundast;
 
         public Juego(BufferedGraphicsContext bcontext)
         {
@@ -42,6 +44,9 @@ namespace Nave_B
             BordesNave.AddRectangle(new Rectangle(20, Game.Height - 20, Game.Width * 3 / 4, 2)); // Abajo
             BordesNave.AddRectangle(new Rectangle(20 + Game.Width * 3 / 4, 0, 2, Game.Height - 20)); // Derecha 
             nav = new Nave(20, Game.Height / 2); // Posicion inicial de la nave
+            soundast = new SoundPlayer();
+            soundast.Stream = Properties.Resources.naveintro;
+            soundast.Play();
         }
 
         private void fondo(){
@@ -70,6 +75,9 @@ namespace Nave_B
 
         private void cargarAsteroides() {
             Asteroides.Add(new Asteroide(Game.Width, Game.Height, 15));
+            soundast = new SoundPlayer();
+            soundast.Stream = Properties.Resources.aste;
+            soundast.Play();
         }
 
         private void back_time_Tick(object sender, EventArgs e)

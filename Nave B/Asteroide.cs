@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Media;
 
 namespace Nave_B
 {
@@ -20,6 +21,7 @@ namespace Nave_B
         private bool sentido_horario = true;
         private PointF[] puntos = new PointF[3];
         private GraphicsPath AstPath;
+        private SoundPlayer colicion;
 
         public Asteroide(int ancho, int alto, int vx) {
             this.Ancho = ancho;
@@ -103,6 +105,9 @@ namespace Nave_B
 
         public void destruir(){
             Size -= 15;
+            colicion = new SoundPlayer();
+            colicion.Stream = Properties.Resources.colicion;
+            colicion.Play();
         }
     }
 }

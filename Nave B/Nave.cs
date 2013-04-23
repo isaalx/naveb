@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Media;
 
 namespace Nave_B
 {
@@ -20,6 +21,7 @@ namespace Nave_B
         private int dir = 0;
         private int nave = 0;
         private GraphicsPath NavPath;
+        private SoundPlayer disparo;
 
         public Nave(int x, int y) {
             this.X = x;
@@ -94,6 +96,9 @@ namespace Nave_B
                         break;
                     case Keys.X:
                         disparar();
+                        disparo=new SoundPlayer();
+                        disparo.Stream = Properties.Resources.disp;
+                        disparo.Play();
                         break;
             }
         }
