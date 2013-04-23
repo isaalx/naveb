@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Juego));
             this.Game = new System.Windows.Forms.PictureBox();
             this.back_time = new System.Windows.Forms.Timer(this.components);
+            this.lpuntos = new System.Windows.Forms.Label();
+            this.control = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Game)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,15 +50,41 @@
             // 
             this.back_time.Tick += new System.EventHandler(this.back_time_Tick);
             // 
+            // lpuntos
+            // 
+            this.lpuntos.AutoSize = true;
+            this.lpuntos.BackColor = System.Drawing.Color.Transparent;
+            this.lpuntos.CausesValidation = false;
+            this.lpuntos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lpuntos.ForeColor = System.Drawing.Color.Yellow;
+            this.lpuntos.Location = new System.Drawing.Point(695, 0);
+            this.lpuntos.Name = "lpuntos";
+            this.lpuntos.Size = new System.Drawing.Size(61, 13);
+            this.lpuntos.TabIndex = 1;
+            this.lpuntos.Text = "Puntos: 0";
+            // 
+            // control
+            // 
+            this.control.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.control.Location = new System.Drawing.Point(-1, 0);
+            this.control.Name = "control";
+            this.control.Size = new System.Drawing.Size(1, 13);
+            this.control.TabIndex = 2;
+            this.control.KeyDown += new System.Windows.Forms.KeyEventHandler(this.control_KeyDown);
+            this.control.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
+            // 
             // Juego
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.control);
+            this.Controls.Add(this.lpuntos);
             this.Controls.Add(this.Game);
             this.Name = "Juego";
             this.Size = new System.Drawing.Size(800, 600);
             ((System.ComponentModel.ISupportInitialize)(this.Game)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -64,5 +92,7 @@
 
         private System.Windows.Forms.PictureBox Game;
         private System.Windows.Forms.Timer back_time;
+        private System.Windows.Forms.Label lpuntos;
+        private System.Windows.Forms.TextBox control;
     }
 }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Asteroide.cs" />
+    <Compile Include="Disparo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,7 +104,10 @@
     <None Include="Resources\aste.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\nave.wav" />
+    <None Include="Resources\disp.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\introgame.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\naveintro.wav" />
