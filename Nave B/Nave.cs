@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Media;
+using System.Drawing.Drawing2D;
 
 namespace Nave_B
 {
@@ -12,16 +12,14 @@ namespace Nave_B
         public List<Disparo> Disparos { set; get; }
         public int Y { set; get; }
         public int X { set; get; }
+        public int Vxy { set; get; }
         public const int NORMAL = 0;
         public const int ARRIBA = 3;
         public const int ABAJO = 6;
         private bool ar = false, ab = false, iz = false, de = false;
         private int dir = 0;
         private int nave = 0;
-        private SoundPlayer disparo;
-
-        public Nave() : this (0,0){ 
-        }
+        private GraphicsPath NavPath;
 
         public Nave(int x, int y) {
             this.X = x;
@@ -37,6 +35,7 @@ namespace Nave_B
             Naves.Add(new Rectangle(46, 89, 43, 31));
             Naves.Add(new Rectangle(91, 89, 43, 31));
             Disparos = new List<Disparo>();
+            this.Vxy = 7;
         }
 
         public Rectangle getNave() {
@@ -50,49 +49,52 @@ namespace Nave_B
 
         public void getPosision() {
             if (ar) {
-                this.Y -= 3;
+                this.Y -= this.Vxy;
                 this.setDireccion(Nave.ARRIBA);
             }
             if (ab)
             {
-                this.Y += 3;
+                this.Y += this.Vxy;
                 this.setDireccion(Nave.ABAJO);
             }
             if (iz)
             {
-                this.X -= 3;
+                this.X -= this.Vxy;
                 this.setDireccion(Nave.NORMAL);
             }
             if (de)
             {
-                this.X += 3;
+                this.X += this.Vxy;
                 this.setDireccion(Nave.NORMAL);
             }
+        }
+
+        public GraphicsPath getPath(){
+            nave = (nave < 3 ? nave : 0);
+            NavPath = new GraphicsPath();
+            NavPath.AddRectangle(Naves[dir + nave]);
+            return NavPath;
         }
 
         public void mover(Keys tecla)
         {
             switch (tecla)
-            {
-                case Keys.Up:
-                    ar = true;
-                    break;
-                case Keys.Down:
-                    ab = true;
-                    break;
-                case Keys.Left:
-                    iz = true;
-                    break;
-                case Keys.Right:
-                    de = true;
-                    break;
-                case Keys.X:
-                    
-                    disparar();
-                    disparo=new SoundPlayer();
-                    disparo.Stream = Properties.Resources.disp;
-                    disparo.Play();
-                    break;
+                {
+                    case Keys.Up:
+                        ar = true;
+                        break;
+                    case Keys.Down:
+                        ab = true;
+                        break;
+                    case Keys.Left:
+                        iz = true;
+                        break;
+                    case Keys.Right:
+                        de = true;
+                        break;
+                    case Keys.X:
+                        disparar();
+                        break;
             }
         }
 
@@ -119,7 +121,7 @@ namespace Nave_B
             nave = (nave < 3 ? nave : 0);
             int lx = this.X + (Naves[dir + nave].Width);
             int ly = this.Y + (Naves[dir + nave].Height / 2 );
-            Disparos.Add(new Disparo(lx, ly, 10, 2, Color.Yellow));
+            Disparos.Add(new Disparo(lx, ly, 7, 2, Color.Yellow));
         }
 
     }
