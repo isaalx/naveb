@@ -17,15 +17,19 @@ namespace Nave_B
         public const int NORMAL = 0;
         public const int ARRIBA = 3;
         public const int ABAJO = 6;
+        public const int DESTRUCCION = 9;
         private bool ar = false, ab = false, iz = false, de = false;
         private int dir = 0;
         private int nave = 0;
         private GraphicsPath NavPath;
         private SoundPlayer disparo;
+        private Bitmap naves_spr;
+        private bool Destruction = false;
 
         public Nave(int x, int y) {
             this.X = x;
             this.Y = y;
+            naves_spr = Properties.Resources.nave; // sprites de la nave
             Naves = new List<Rectangle>();
             Naves.Add(new Rectangle(0, 42, 43, 39));
             Naves.Add(new Rectangle(46, 42, 43, 39));
@@ -36,6 +40,10 @@ namespace Nave_B
             Naves.Add(new Rectangle(0, 89, 43, 31));
             Naves.Add(new Rectangle(46, 89, 43, 31));
             Naves.Add(new Rectangle(91, 89, 43, 31));
+            Naves.Add(new Rectangle(0, 0, 57, 39));
+            Naves.Add(new Rectangle(63, 0, 62, 39));
+            Naves.Add(new Rectangle(151, 0, 62, 39));
+
             Disparos = new List<Disparo>();
             this.Vxy = 7;
         }
@@ -45,42 +53,51 @@ namespace Nave_B
             return Naves[dir + nave++];
         }
 
-        public void setDireccion(int dir = NORMAL | ARRIBA | ABAJO){
+        public Bitmap getImg()
+        {
+            return naves_spr;
+        }
+
+        public void setDireccion(int dir = NORMAL | ARRIBA | ABAJO | DESTRUCCION){
                 this.dir = dir;
         }
 
         public void getPosision() {
-            if (ar) {
-                this.Y -= this.Vxy;
-                this.setDireccion(Nave.ARRIBA);
-            }
-            if (ab)
+            if (!Destruction)
             {
-                this.Y += this.Vxy;
-                this.setDireccion(Nave.ABAJO);
-            }
-            if (iz)
-            {
-                this.X -= this.Vxy;
-                this.setDireccion(Nave.NORMAL);
-            }
-            if (de)
-            {
-                this.X += this.Vxy;
-                this.setDireccion(Nave.NORMAL);
+                if (ar)
+                {
+                    this.Y -= this.Vxy;
+                    this.setDireccion(Nave.ARRIBA);
+                }
+                if (ab)
+                {
+                    this.Y += this.Vxy;
+                    this.setDireccion(Nave.ABAJO);
+                }
+                if (iz)
+                {
+                    this.X -= this.Vxy;
+                    this.setDireccion(Nave.NORMAL);
+                }
+                if (de)
+                {
+                    this.X += this.Vxy;
+                    this.setDireccion(Nave.NORMAL);
+                }
             }
         }
 
         public GraphicsPath getPath(){
             nave = (nave < 3 ? nave : 0);
             NavPath = new GraphicsPath();
-            NavPath.AddRectangle(Naves[dir + nave]);
+            NavPath.AddRectangle(new Rectangle(this.X, this.Y, Naves[dir + nave].Width, Naves[dir + nave].Height));
             return NavPath;
         }
 
         public void mover(Keys tecla)
         {
-            switch (tecla)
+                switch (tecla)
                 {
                     case Keys.Up:
                         ar = true;
@@ -96,11 +113,11 @@ namespace Nave_B
                         break;
                     case Keys.X:
                         disparar();
-                        disparo=new SoundPlayer();
+                        disparo = new SoundPlayer();
                         disparo.Stream = Properties.Resources.disp;
                         disparo.Play();
                         break;
-            }
+                }
         }
 
         public void detener(Keys tecla)
@@ -129,7 +146,10 @@ namespace Nave_B
             Disparos.Add(new Disparo(lx, ly, 7, 2, Color.Yellow));
         }
 
-        public void Destruir() { 
+        public void Destruir() {
+            Destruction = true;
+            naves_spr = Properties.Resources.naves_dest;
+            this.setDireccion(Nave.DESTRUCCION);
         }
 
     }

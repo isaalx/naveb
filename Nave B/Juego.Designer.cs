@@ -34,6 +34,7 @@
             this.back_time = new System.Windows.Forms.Timer(this.components);
             this.lpuntos = new System.Windows.Forms.Label();
             this.control = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Game)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,10 +74,28 @@
             this.control.KeyDown += new System.Windows.Forms.KeyEventHandler(this.control_KeyDown);
             this.control.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Red;
+            this.button1.Location = new System.Drawing.Point(727, 576);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(72, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Volver";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Juego
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.control);
             this.Controls.Add(this.lpuntos);
             this.Controls.Add(this.Game);
@@ -94,5 +113,6 @@
         private System.Windows.Forms.Timer back_time;
         private System.Windows.Forms.Label lpuntos;
         private System.Windows.Forms.TextBox control;
+        private System.Windows.Forms.Button button1;
     }
 }

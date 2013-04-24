@@ -18,22 +18,22 @@ namespace Nave_B
         private List<Asteroide> Asteroides;
         private Rectangle Fondo;
         private Bitmap background;
-        private Bitmap naves;
-        private Bitmap asteroide;
         private BufferedGraphicsContext buffercontext;
         private BufferedGraphics buffer;
         private int ticks = 0, puntos = 0, prenivel = 0, nivel = 0;
         private GraphicsPath BordesNave;
         private SoundPlayer soundast;
+        private Main Principal;
+        private int asti = 0;
+        private bool asts = true;
 
-        public Juego(BufferedGraphicsContext bcontext)
+        public Juego(BufferedGraphicsContext bcontext, Main principal)
         {
             InitializeComponent();
+            this.Principal = principal;
             this.buffercontext = bcontext; // BufferContext desde el Frame
             Fondo = new Rectangle(0,0,Game.Width,Game.Height); 
             background = Properties.Resources.back; // imagen de Fondo
-            naves = Properties.Resources.nave; // sprites de la nave
-            asteroide = Properties.Resources.asteroide; // imagen de asteroide
             back_time.Enabled = true; // timer (es como un while infinito que se encarga de realizar los cambios)
             Asteroides = new List<Asteroide>();
             control.Focus();
@@ -74,7 +74,9 @@ namespace Nave_B
         }
 
         private void cargarAsteroides() {
-            Asteroides.Add(new Asteroide(Game.Width, Game.Height, 15));
+            asti = (asti < 3 ? asti : 0);
+            asts = !asts;
+            Asteroides.Add(new Asteroide(Game.Width, Game.Height, 15, asti++, asts));
             soundast = new SoundPlayer();
             soundast.Stream = Properties.Resources.aste;
             soundast.Play();
@@ -86,9 +88,8 @@ namespace Nave_B
             buffer = buffercontext.Allocate(Game.CreateGraphics(), Game.DisplayRectangle);
             /* Dibuja el fondo */ 
             fondo();
-            /* Dibuja la nave */
+            /* Cargar la nave */
             nav.getPosision();
-            buffer.Graphics.DrawImage(naves, nav.X, nav.Y, nav.getNave(), GraphicsUnit.Pixel);
             /* Dibuja cada disparo */
             for (int i = 0; i < nav.Disparos.Count; i++) {
                 buffer.Graphics.FillPath(nav.Disparos[i].ColorD, nav.Disparos[i].getPath());
@@ -100,9 +101,9 @@ namespace Nave_B
                 int tmpx = Asteroides[j].X;
                 int tmpy = Asteroides[j].Y;
                 buffer.Graphics.TranslateTransform(tmpx, tmpy);
-                buffer.Graphics.DrawImage(asteroide, Asteroides[j].getPuntos()); //dibuja el bitmap , especificando un arreglo de 3 puntos
+                buffer.Graphics.DrawImage(Asteroides[j].getImg(), Asteroides[j].getPuntos()); //dibuja el bitmap , especificando un arreglo de 3 puntos
                 buffer.Graphics.TranslateTransform(-tmpx, -tmpy);
-
+                
                 if (Asteroides[j].X < -Asteroides[j].Size)
                 {
                     Asteroides.RemoveAt(j--);
@@ -111,10 +112,6 @@ namespace Nave_B
                 {
                     for (int k = 0; k < nav.Disparos.Count; k++)
                     {
-                        if (Asteroides.Count == 0)
-                        {
-                            break;
-                        }
                         Region r = new Region(Asteroides[j].getPath());
                         r.Intersect(nav.Disparos[k].getPath());
                         if (!r.IsEmpty(buffer.Graphics))
@@ -131,8 +128,17 @@ namespace Nave_B
                     }
                 }
             }
-
-
+            /* Cargar la nave */
+            buffer.Graphics.DrawImage(nav.getImg(), nav.X, nav.Y, nav.getNave(), GraphicsUnit.Pixel);
+            for (int j = 0; j < Asteroides.Count; j++)
+            {
+                Region r1 = new Region(Asteroides[j].getPath());
+                r1.Intersect(nav.getPath());
+                if (!r1.IsEmpty(buffer.Graphics))
+                {
+                    nav.Destruir();
+                }
+            }
             /* No colocar codigo para dibujar despues de aqui. */
             Puntos();
             buffer.Render();
@@ -169,6 +175,11 @@ namespace Nave_B
         {
             nav.detener(e.KeyCode);
             control.Text = "";
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Principal.Volver();
         }
 
     }

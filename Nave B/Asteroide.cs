@@ -16,26 +16,41 @@ namespace Nave_B
         private Matriz p1;
         private Matriz p2;
         private Matriz p3;
-        private Matriz p4;
+        //private Matriz p4; Este punto ya no se usa.
         private Random rand;
-        private bool sentido_horario = true;
+        private bool sentido_horario;
         private PointF[] puntos = new PointF[3];
         private GraphicsPath AstPath;
         private SoundPlayer colicion;
+        private Bitmap[] asteroides;
+        private int index = 0;
+        private int grados;
+        private int size_o;
 
-        public Asteroide(int ancho, int alto, int vx) {
+        public Asteroide(int ancho, int alto, int vx, int i, bool s) {
             this.Ancho = ancho;
             this.Alto = alto;
             this.Vx = vx;
+            this.index = i;
+            sentido_horario = s;
             mr = new Matriz(2, 2);
             p1 = new Matriz(1, 2);
             p2 = new Matriz(p1);
             p3 = new Matriz(p1);
-            p4 = new Matriz(p1);
+            //p4 = new Matriz(p1);
             rand = new Random();
             this.Size = rand.Next(15, 150);
             this.X = ancho + Size;
             this.Y = rand.Next(this.Alto / 2 - Size, this.Alto / 2 - Size);
+            asteroides = new Bitmap[3];
+            asteroides[0] = Properties.Resources.ast1; // imagen de asteroide
+            asteroides[1] = Properties.Resources.ast2; // imagen de asteroide
+            asteroides[2] = Properties.Resources.ast3; // imagen de asteroide
+            grados = rand.Next(5, 25);
+            puntos[0] = new PointF((float)-Size, (float)-Size); //primer punto
+            puntos[1] = new PointF((float)Size, (float)-Size); //segundo punto
+            puntos[2] = new PointF((float)-Size, (float)Size); //tercer punto
+            size_o = Size;
         }
 
         public GraphicsPath getPath()
@@ -45,22 +60,27 @@ namespace Nave_B
             return AstPath;
         }
 
+        public Bitmap getImg()
+        {
+            return asteroides[index];
+        }
+
         private void CargarAsteroide()
         {
-            int grados = rand.Next(5, 25);
             // -- tamaño de la imagen a mostrar con los 4 puntos el size representa el tamaño de la imagen --
-            // primer punto 
-            p1[0, 0] = -Size; //x 
-            p1[0, 1] = -Size;//y 
-            //segundo punto 
-            p2[0, 0] = Size; //x
-            p2[0, 1] = -Size;//y 
             //tercer punto 
-            p4[0, 0] = Size; //x
-            p4[0, 1] = Size;//y
+            //p4[0, 0] = Size; //x
+            //p4[0, 1] = Size;//y
+            // primer punto
+            p1[0, 0] = puntos[0].X * Size/size_o; //x 
+            p1[0, 1] = puntos[0].Y * Size / size_o;//y 
+            //segundo punto 
+            p2[0, 0] = puntos[1].X * Size / size_o; //x
+            p2[0, 1] = puntos[1].Y * Size / size_o;//y 
             //cuarto punto 
-            p3[0, 0] = -Size; //x
-            p3[0, 1] = Size;//y
+            p3[0, 0] = puntos[2].X * Size / size_o; //x
+            p3[0, 1] = puntos[2].Y * Size / size_o;//y
+            size_o = Size;
 
             //rotacion
             double rad = (grados * (Math.PI)) / 180;
@@ -72,7 +92,7 @@ namespace Nave_B
                 mr[0, 1] = Math.Sin(rad);
                 mr[1, 0] = -Math.Sin(rad);
                 mr[1, 1] = Math.Cos(rad);
-                sentido_horario = false;
+                //sentido_horario = false;
             } else {
                 //sentido horario
                 mr = new Matriz(2, 2);
@@ -80,7 +100,7 @@ namespace Nave_B
                 mr[0, 1] = -Math.Sin(rad);
                 mr[1, 0] = Math.Sin(rad);
                 mr[1, 1] = Math.Cos(rad);
-                sentido_horario = true;
+                //sentido_horario = true;
             }
 
             // metodo para rotar el objeto
@@ -88,7 +108,7 @@ namespace Nave_B
             p1 = p1 * mr;
             p2 = p2 * mr;
             p3 = p3 * mr;
-            p4 = p4 * mr;
+            //p4 = p4 * mr;
 
             this.X -= Vx;
         }

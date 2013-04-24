@@ -42,10 +42,10 @@
             this.BJugar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
             this.BJugar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
             this.BJugar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BJugar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BJugar.Location = new System.Drawing.Point(362, 288);
+            this.BJugar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BJugar.Location = new System.Drawing.Point(100, 100);
             this.BJugar.Name = "BJugar";
-            this.BJugar.Size = new System.Drawing.Size(76, 24);
+            this.BJugar.Size = new System.Drawing.Size(100, 50);
             this.BJugar.TabIndex = 0;
             this.BJugar.Text = "Jugar";
             this.BJugar.UseVisualStyleBackColor = false;
@@ -53,12 +53,13 @@
             // 
             // Workspace
             // 
+            this.Workspace.BackgroundImage = global::Nave_B.Properties.Resources.portada;
+            this.Workspace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Workspace.Controls.Add(this.BJugar);
             this.Workspace.Location = new System.Drawing.Point(2, 2);
             this.Workspace.Name = "Workspace";
             this.Workspace.Size = new System.Drawing.Size(800, 600);
             this.Workspace.TabIndex = 1;
-    
             // 
             // Main
             // 

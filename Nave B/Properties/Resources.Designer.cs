@@ -61,21 +61,41 @@ namespace Nave_B.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream aste {
+        internal static System.Drawing.Bitmap ast1 {
             get {
-                return ResourceManager.GetStream("aste", resourceCulture);
+                object obj = ResourceManager.GetObject("ast1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap asteroide {
+        internal static System.Drawing.Bitmap ast2 {
             get {
-                object obj = ResourceManager.GetObject("asteroide", resourceCulture);
+                object obj = ResourceManager.GetObject("ast2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ast3 {
+            get {
+                object obj = ResourceManager.GetObject("ast3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream aste {
+            get {
+                return ResourceManager.GetStream("aste", resourceCulture);
             }
         }
         
@@ -132,6 +152,26 @@ namespace Nave_B.Properties {
         internal static System.IO.UnmanagedMemoryStream naveintro {
             get {
                 return ResourceManager.GetStream("naveintro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap naves_dest {
+            get {
+                object obj = ResourceManager.GetObject("naves_dest", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap portada {
+            get {
+                object obj = ResourceManager.GetObject("portada", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

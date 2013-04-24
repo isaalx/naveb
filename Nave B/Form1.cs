@@ -30,11 +30,15 @@ namespace Nave_B
         private void BJugar_Click(object sender, EventArgs e)
         {
             BJugar.Hide();
-            jueguito = new Juego(buffercontext);
+            jueguito = new Juego(buffercontext, this);
             Workspace.Controls.Add(jueguito);
         }
 
-      
+        public void Volver() {
+            Workspace.Controls.Remove(jueguito);
+            jueguito.Dispose();
+            BJugar.Show();
+        }
 
     }
 }
