@@ -129,5 +129,8 @@ namespace Nave_B
             Disparos.Add(new Disparo(lx, ly, 7, 2, Color.Yellow));
         }
 
+        public void Destruir() { 
+        }
+
     }
 }

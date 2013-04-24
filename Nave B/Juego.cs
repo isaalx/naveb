@@ -102,19 +102,36 @@ namespace Nave_B
                 buffer.Graphics.TranslateTransform(tmpx, tmpy);
                 buffer.Graphics.DrawImage(asteroide, Asteroides[j].getPuntos()); //dibuja el bitmap , especificando un arreglo de 3 puntos
                 buffer.Graphics.TranslateTransform(-tmpx, -tmpy);
-                if (Asteroides[j].X < -Asteroides[j].Size) Asteroides.RemoveAt(j);
-                Region r = new Region(Asteroides[j].getPath());
-                for (int k = 0; k < nav.Disparos.Count; k++)
+
+                if (Asteroides[j].X < -Asteroides[j].Size)
                 {
-                    r.Intersect(nav.Disparos[k].getPath());
-                    if (!r.IsEmpty(buffer.Graphics)) {
-                        Asteroides[j].destruir();
-                        nav.Disparos.RemoveAt(k);
-                        puntos += 10;
-                        if (Asteroides[j].Size < 15) Asteroides.RemoveAt(j);
+                    Asteroides.RemoveAt(j--);
+                }
+                else
+                {
+                    for (int k = 0; k < nav.Disparos.Count; k++)
+                    {
+                        if (Asteroides.Count == 0)
+                        {
+                            break;
+                        }
+                        Region r = new Region(Asteroides[j].getPath());
+                        r.Intersect(nav.Disparos[k].getPath());
+                        if (!r.IsEmpty(buffer.Graphics))
+                        {
+                            Asteroides[j].destruir();
+                            nav.Disparos.RemoveAt(k--);
+                            puntos += 10;
+                            if (Asteroides[j].Size < 15)
+                            {
+                                Asteroides.RemoveAt(j--);
+                                break;
+                            }
+                        }
                     }
                 }
             }
+
 
             /* No colocar codigo para dibujar despues de aqui. */
             Puntos();

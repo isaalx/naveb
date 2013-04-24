@@ -41,13 +41,13 @@ namespace Nave_B
         public GraphicsPath getPath()
         {
             AstPath = new GraphicsPath();
-            AstPath.AddEllipse(this.X, this.Y, 2*Size, 2*Size);
+            AstPath.AddEllipse(this.X - Size, this.Y - Size, 2 * Size, 2 * Size);
             return AstPath;
         }
 
         private void CargarAsteroide()
         {
-            int grados = rand.Next(10, 65);
+            int grados = rand.Next(5, 25);
             // -- tamaño de la imagen a mostrar con los 4 puntos el size representa el tamaño de la imagen --
             // primer punto 
             p1[0, 0] = -Size; //x 
